@@ -1,7 +1,7 @@
-let rerenderEntireTree = (state:stateType)=>{
+let rerenderEntireTree = (state: stateType) => {
     console.log('state was changed')
 }
-type rerenderEntireTreeType = (state:stateType)=>void
+type rerenderEntireTreeType = (state: stateType) => void
 export type postType = {
     id: number,
     post: string,
@@ -38,7 +38,6 @@ export type stateType = {
     profilePage: profilePageType,
     dialogsPage: dialogsPageType,
     friendsPage: friendsPageType,
-    usersPage:any
 }
 type newPostType = {
     id: number,
@@ -50,8 +49,8 @@ type postMessageType = string
 type newMessageType = string
 export type addPostType = () => void
 export type addMessageType = () => void
-export type updateNewPostTextType = (newPostText: postMessageType)=>void
-export type onChangeMessageType = (newMessage:string)=>void
+export type updateNewPostTextType = (newPostText: postMessageType) => void
+export type onChangeMessageType = (newMessage: string) => void
 let state: stateType = {
     profilePage: {
         posts: [
@@ -123,8 +122,6 @@ let state: stateType = {
             {id: 3, name: 'Wil', url: 'https://vistapointe.net/images/wil-wheaton-wallpaper-13.jpg'},
         ]
     },
-    usersPage: {
-    }
 }
 export const addPost: addPostType = () => {
     let newPostText: newPostType = {
@@ -147,15 +144,15 @@ export const addMessage: addMessageType = () => {
         message: state.dialogsPage.newMessage
     }
     state.dialogsPage.messages.push(newMessageEl)
-    state.dialogsPage.newMessage=''
+    state.dialogsPage.newMessage = ''
     rerenderEntireTree(state)
 }
-export const onChangeMessage=(newMessage:string)=>{
-    state.dialogsPage.newMessage=newMessage
+export const onChangeMessage = (newMessage: string) => {
+    state.dialogsPage.newMessage = newMessage
     rerenderEntireTree(state)
 }
-export const subscribe=(observer:rerenderEntireTreeType)=>{
-rerenderEntireTree=observer
+export const subscribe = (observer: rerenderEntireTreeType) => {
+    rerenderEntireTree = observer
 }
 
 export default state
