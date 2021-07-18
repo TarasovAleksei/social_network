@@ -37,7 +37,8 @@ export type friendsPageType = {
 export type stateType = {
     profilePage: profilePageType,
     dialogsPage: dialogsPageType,
-    friendsPage: friendsPageType
+    friendsPage: friendsPageType,
+    usersPage:any
 }
 type newPostType = {
     id: number,
@@ -121,6 +122,8 @@ let state: stateType = {
             },
             {id: 3, name: 'Wil', url: 'https://vistapointe.net/images/wil-wheaton-wallpaper-13.jpg'},
         ]
+    },
+    usersPage: {
     }
 }
 export const addPost: addPostType = () => {
