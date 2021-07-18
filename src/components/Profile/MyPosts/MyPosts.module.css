@@ -1,0 +1,9 @@
+.myPosts {
+    margin-left: 10px;
+}
+.btnAddPost {
+    border-radius: 20px;
+    background-color: #000dff;
+    color: white;
+    font-weight: 700;
+}

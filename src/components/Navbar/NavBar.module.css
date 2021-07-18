@@ -1,0 +1,37 @@
+.nav {
+    grid-area: n;
+    background-color: #d5bbfa;
+    padding: 20px;
+}
+.item a{
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 15px;
+}
+.item {
+    margin-top: 15px;
+}
+.item a.activeLink{
+    color: #2873a5;
+    text-decoration: none;
+}
+.item:last-child {
+    padding-top: 50px;
+    font-size: 2rem;
+}
+.friendsItems {
+    display: inline-block;
+}
+.friendsItem {
+    display: block;
+    font-size: 1rem;
+    color: white;
+    margin: 0 auto;
+    padding: 5px;
+}
+.friendsItem img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
