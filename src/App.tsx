@@ -10,32 +10,22 @@ import News from "./components/News/News";
 import Settings from "./components/Settings/Settings";
 import Users from "./components/Users/Users";
 import Dialogs from "./components/Dialogs/Dialogs";
+import {Storetype} from "./components/redux/state";
 
-import {
-    addMessage,
-    addMessageType,
-    addPostType,
-    onChangeMessage, onChangeMessageType,
-    stateType,
-    updateNewPostTextType
-} from "./components/redux/state";
 
 type PropsType = {
-    state: stateType,
-    addPost: addPostType,
-    addMessage: addMessageType,
-    updateNewPostText: updateNewPostTextType,
-    onChangeMessage: onChangeMessageType
+store: Storetype
 }
 
 const App = (props: PropsType) => {
+    const state = props.store.getState()
     return (
         <div className='app-wrapper'>
             <Header/>
-            <NavBar friendsPage={props.state.friendsPage}/>
+            <NavBar friendsPage={state.friendsPage}/>
             <div className='app-wrapper-content'>
-                <Route path='/profile' render={() => <Profile updateNewPostText={props.updateNewPostText} addPost={props.addPost} profilePage={props.state.profilePage}/>}/>
-                <Route path='/dialogs' render={() => <Dialogs addMessage={props.addMessage} dialogsPage={props.state.dialogsPage} onChangeMessage={onChangeMessage} />}/>
+                <Route path='/profile' render={() => <Profile updateNewPostText={props.store.updateNewPostText.bind(props.store)} addPost={props.store.addPost.bind(props.store)} profilePage={state.profilePage}/>}/>
+                <Route path='/dialogs' render={() => <Dialogs addMessage={props.store.addMessage.bind(props.store)} dialogsPage={state.dialogsPage} onChangeMessage={props.store.onChangeMessage.bind(props.store)} />}/>
                 <Route path='/users' render={() => <Users/>}/>
                 <Route path='/news' render={() => <News/>}/>
                 <Route path='/music' render={() => <Music/>}/>

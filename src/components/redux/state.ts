@@ -1,7 +1,6 @@
-let rerenderEntireTree = (state: stateType) => {
-    console.log('state was changed')
-}
-type rerenderEntireTreeType = (state: stateType) => void
+export type getStateType = ()=> stateType
+export type rerenderEntireTreeType = () => void
+export type subscribeType = (rerenderEntireTree:rerenderEntireTreeType)=>void
 export type postType = {
     id: number,
     post: string,
@@ -51,7 +50,18 @@ export type addPostType = () => void
 export type addMessageType = () => void
 export type updateNewPostTextType = (newPostText: postMessageType) => void
 export type onChangeMessageType = (newMessage: string) => void
-let state: stateType = {
+export type Storetype = {
+    _state: stateType,
+    getState:getStateType,
+    addPost: addPostType,
+    updateNewPostText: updateNewPostTextType,
+    addMessage: addMessageType,
+    onChangeMessage: onChangeMessageType,
+    subscribe: subscribeType,
+    rerenderEntireTree: rerenderEntireTreeType
+}
+export const store:Storetype = {
+    _state: {
     profilePage: {
         posts: [
             {
@@ -122,37 +132,47 @@ let state: stateType = {
             {id: 3, name: 'Wil', url: 'https://vistapointe.net/images/wil-wheaton-wallpaper-13.jpg'},
         ]
     },
-}
-export const addPost: addPostType = () => {
+},
+    getState(){
+        return this._state
+    },
+    addPost() {
     let newPostText: newPostType = {
         id: 5,
-        post: state.profilePage.newPost,
+        post: this._state.profilePage.newPost,
         likeCount: 0,
         url: "https://avatars.mds.yandex.net/get-zen_doc/1686199/pub_5e3e6d88e6e8eb5b95da89cf_5e3e6e6b6ffb5072de613bf5/scale_1200"
     }
-    state.profilePage.posts.push(newPostText)
-    state.profilePage.newPost = ''
-    rerenderEntireTree(state)
-}
-export const updateNewPostText = (newPostText: postMessageType) => {
-    state.profilePage.newPost = newPostText
-    rerenderEntireTree(state)
-}
-export const addMessage: addMessageType = () => {
+        this._state.profilePage.posts.push(newPostText)
+        this._state.profilePage.newPost = ''
+    this.rerenderEntireTree()
+},
+    updateNewPostText (newPostText: postMessageType) {
+        this._state.profilePage.newPost = newPostText
+        this.rerenderEntireTree()
+    },
+    addMessage() {
     let newMessageEl: messageType = {
         id: 4,
-        message: state.dialogsPage.newMessage
+        message: this._state.dialogsPage.newMessage
     }
-    state.dialogsPage.messages.push(newMessageEl)
-    state.dialogsPage.newMessage = ''
-    rerenderEntireTree(state)
-}
-export const onChangeMessage = (newMessage: string) => {
-    state.dialogsPage.newMessage = newMessage
-    rerenderEntireTree(state)
-}
-export const subscribe = (observer: rerenderEntireTreeType) => {
-    rerenderEntireTree = observer
+    this._state.dialogsPage.messages.push(newMessageEl)
+    this._state.dialogsPage.newMessage = ''
+    this.rerenderEntireTree()
+},
+    onChangeMessage(newMessage: string){
+        this._state.dialogsPage.newMessage = newMessage
+        this.rerenderEntireTree()
+    },
+    rerenderEntireTree(){
+        console.log('state was changed')
+    },
+    subscribe(observer: rerenderEntireTreeType) {
+        this.rerenderEntireTree = observer
+    }
 }
 
-export default state
+
+
+
+
