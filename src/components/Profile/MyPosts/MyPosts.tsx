@@ -1,22 +1,28 @@
 import React, {ChangeEvent} from "react";
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {addPostType, profilePageType, updateNewPostTextType} from "../../redux/state";
+import {
+    addPostAC,
+    addPostType,
+    dispatchType,
+    profilePageType,
+    updateNewPostTextAC,
+    updateNewPostTextType
+} from "../../redux/state";
 
 
 type PropsType = {
     profilePage: profilePageType,
-    addPost: addPostType,
-    updateNewPostText: updateNewPostTextType
+    dispatch: dispatchType
 }
 
 const MyPosts = (props: PropsType) => {
-    const textPost: string = props.profilePage.newPost
+    const textPost: string = props.profilePage.newPostText
     const onChangeInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        props.updateNewPostText(event.currentTarget.value)
+        props.dispatch(updateNewPostTextAC(event.currentTarget.value))
     }
     const addNewPost = () => {
-        props.addPost()
+        props.dispatch(addPostAC())
     }
 
     const postElement = props.profilePage.posts.map(p => {

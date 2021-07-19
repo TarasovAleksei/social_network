@@ -24,8 +24,8 @@ const App = (props: PropsType) => {
             <Header/>
             <NavBar friendsPage={state.friendsPage}/>
             <div className='app-wrapper-content'>
-                <Route path='/profile' render={() => <Profile updateNewPostText={props.store.updateNewPostText.bind(props.store)} addPost={props.store.addPost.bind(props.store)} profilePage={state.profilePage}/>}/>
-                <Route path='/dialogs' render={() => <Dialogs addMessage={props.store.addMessage.bind(props.store)} dialogsPage={state.dialogsPage} onChangeMessage={props.store.onChangeMessage.bind(props.store)} />}/>
+                <Route path='/profile' render={() => <Profile dispatch={props.store.dispatch.bind(props.store)} profilePage={state.profilePage}/>}/>
+                <Route path='/dialogs' render={() => <Dialogs dispatch={props.store.dispatch.bind(props.store)} dialogsPage={state.dialogsPage} />}/>
                 <Route path='/users' render={() => <Users/>}/>
                 <Route path='/news' render={() => <News/>}/>
                 <Route path='/music' render={() => <Music/>}/>
