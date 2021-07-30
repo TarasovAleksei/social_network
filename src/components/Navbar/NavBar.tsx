@@ -1,7 +1,7 @@
 import React from "react";
 import classes from './NavBar.module.css';
 import {NavLink} from "react-router-dom";
-import {friendsPageType} from "../redux/state";
+import {friendsPageType} from "../redux/redux-store";
 
 type PropsType = {
     friendsPage: friendsPageType

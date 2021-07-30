@@ -2,33 +2,25 @@ import React, {ChangeEvent} from "react";
 import classes from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {
-    addMessageAC,
-    dialogsPageType,
-    dispatchType,
-    onChangeMessageAC,
-} from "../redux/state";
+import {dialogType, messageType, newMessageType} from "../redux/redux-store";
 
 
 type PropsType = {
-    dialogsPage: dialogsPageType,
-    dispatch:dispatchType
+    messages: messageType[]
+    dialogs: dialogType[]
+    newMessage: newMessageType
+    addMessage: () => void
+    onChangeMessageHandler: (event: ChangeEvent<HTMLInputElement>) => void
+
 }
 
 const Dialogs = (props: PropsType) => {
-    const AddMessage = () => {
-        props.dispatch(addMessageAC())
-    }
-    const onChangeMessageHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        props.dispatch(onChangeMessageAC(event.currentTarget.value))
-    }
-
-    const dialogsElement = props.dialogsPage.dialogs.map(d => {
+    const dialogsElement = props.dialogs.map(d => {
         return (
             <DialogItem key={d.id} id={d.id} name={d.name} url={d.url}/>
         )
     })
-    const messageElement = props.dialogsPage.messages.map(m => {
+    const messageElement = props.messages.map(m => {
         return (
             <Message message={m.message} id={m.id} key={m.id}/>
         )
@@ -40,8 +32,8 @@ const Dialogs = (props: PropsType) => {
             </div>
             <div className={classes.messages}>
                 <div>
-                    <input value={props.dialogsPage.newMessage} onChange={onChangeMessageHandler}/>
-                    <button onClick={AddMessage} className={classes.btnDialogs}>add message</button>
+                    <input value={props.newMessage.trim()} onChange={props.onChangeMessageHandler}/>
+                    <button onClick={props.addMessage} className={classes.btnDialogs}>add message</button>
                 </div>
                 {messageElement}
             </div>

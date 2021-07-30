@@ -3,7 +3,7 @@ import classes from "../Dialogs.module.css";
 
 type PropsType = {
     message: string | undefined,
-    id: number
+    id: string
 }
 const Message = (props:PropsType) => {
     return (
