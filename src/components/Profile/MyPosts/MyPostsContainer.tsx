@@ -1,10 +1,9 @@
 import React, {ChangeEvent} from "react";
 import {
-    addPostType, AppStateType, AppStoreType,
+    addPostType, AppStateType,
     dispatchType,
     postMessageType,
     postType,
-    StoreType
 } from "../../redux/redux-store";
 import {addPostAC, updateNewPostTextAC} from "../../redux/profileReducer";
 import MyPosts from "./MyPosts";
@@ -31,20 +30,20 @@ import {connect} from "react-redux";
 // }
 
 export type MapStatePropsType = {
-    posts:postType[]
-    newPostText:postMessageType
+    posts: postType[]
+    newPostText: postMessageType
 }
 export type MapDispatchPropsType = {
-    addNewPost:addPostType
-    onChangeInputHandler: (event: ChangeEvent<HTMLInputElement>)=>void
+    addNewPost: addPostType
+    onChangeInputHandler: (event: ChangeEvent<HTMLInputElement>) => void
 }
-const MapStateToProps = (state: AppStateType):MapStatePropsType=>{
+const MapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         posts: state.profilePage.posts,
         newPostText: state.profilePage.newPostText
     }
 }
-const MapDispatchToProps = (dispatch:dispatchType):MapDispatchPropsType=>{
+const MapDispatchToProps = (dispatch: dispatchType): MapDispatchPropsType => {
     return {
         addNewPost: () => {
             dispatch(addPostAC())

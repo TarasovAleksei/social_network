@@ -2,10 +2,16 @@ import {createStore, combineReducers} from 'redux'
 import {ProfileReducer} from "./profileReducer";
 import {DialogsReducer} from "./dialogsReducer";
 import {FriendsReducer} from "./friendsReducer";
-import {FollowedActionType, SetUsersActionType, UnFollowedActionType, UsersReducer} from "./usersReducer";
+import {
+    FollowedActionType,
+    SetCurrentPageActionType, SetTotalUsersCountActionType,
+    SetUsersActionType,
+    UnFollowedActionType,
+    UsersReducer
+} from "./usersReducer";
 export type getStateType = () => stateType
 export type rerenderEntireTreeType = () => void
-export type totalActionType = AddPostActionType | UpdateNewPostTextActionType | AddMessageActionType | OnChangeMessageActionType |SetUsersActionType | FollowedActionType | UnFollowedActionType
+export type totalActionType = AddPostActionType | UpdateNewPostTextActionType | AddMessageActionType | OnChangeMessageActionType |SetUsersActionType | FollowedActionType | UnFollowedActionType | SetCurrentPageActionType | SetTotalUsersCountActionType
 export type dispatchType = (action: totalActionType)=>void
 export type subscribeType = (rerenderEntireTree: rerenderEntireTreeType) => void
 export type addPostACType = ()=>AddPostActionType
@@ -89,7 +95,7 @@ let reducer = combineReducers({
     usersPage: UsersReducer
 })
 
-export type AppStateType =ReturnType<typeof reducer >
+export type AppStateType =ReturnType<typeof reducer>
 let store = createStore(reducer)
 export type AppStoreType =typeof store
 export default store

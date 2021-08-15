@@ -1,12 +1,8 @@
 import React, {ChangeEvent} from "react";
 import {
-    addPostType,
     AppStateType,
-    AppStoreType, dialogType,
+    dialogType,
     dispatchType, messageType, newMessageType,
-    postMessageType,
-    postType,
-    StoreType
 } from "../redux/redux-store";
 import {addMessageAC, onChangeMessageAC} from "../redux/dialogsReducer";
 import Dialogs from "./Dialogs";
@@ -34,8 +30,8 @@ export type MapStatePropsType = {
     newMessage: newMessageType
 }
 export type MapDispatchPropsType = {
-    addMessage:()=>void,
-    onChangeMessageHandler: (event: ChangeEvent<HTMLInputElement>)=>void
+    addMessage: () => void,
+    onChangeMessageHandler: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 const MapStateToProps = (state: AppStateType): MapStatePropsType => {
