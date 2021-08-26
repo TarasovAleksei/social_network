@@ -1,94 +1,78 @@
 import React from "react";
-import {UsersType} from "../redux/usersReducer";
+import userDefaultPhoto from "../../assets/images/no_foto.jpeg";
 import classes from './Users.module.css'
-import axios from "axios";
-import userDefaultPhoto from '../../assets/images/no_foto.jpeg'
+import { UserType} from "../redux/usersReducer";
+import { NavLink } from "react-router-dom";
 
 
 type PropsType = {
-    users: UsersType,
+    users: UserType[],
     pageSize: number,
     totalUsersCount: number,
-    currentPage: number
+    currentPage: number,
     onChangeFollow: (userID: string) => void,
     onChangeUnFollow: (userID: string) => void,
-    setUsers: (users: UsersType) => void,
+    setUsers: (users: UserType[]) => void,
     setCurrentPage: (currentPage: number) => void,
     setTotalUsersCount: (totalUsersCount: number) => void,
+    onPageChanged: (pageNumber: number)=> void
 }
-
-class Users extends React.Component<PropsType> {
-
-    componentDidMount() {
-        if (this.props.users.length <= 1) axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-            .then(response => {
-                this.props.setUsers(response.data.items)
-                this.props.setTotalUsersCount(response.data.totalCount/100)
-            })
+export const Users = (props: PropsType) => {
+    const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
+    let pages = []
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i)
     }
-
-    onPageChanged = (pageNumber: number) => {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
-            .then(response => this.props.setUsers(response.data.items))
-        this.props.setCurrentPage(pageNumber)
-    }
-
-
-    render() {
-        const pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize)
-        let pages = []
-        for (let i = 1; i <= pagesCount; i++) {
-            pages.push(i)
-        }
-        return (
+    return (
+        <div>
             <div>
-                <div>
-                    {pages.map(p => <span onClick={() => {
-                        this.onPageChanged(p)
-                    }} className={this.props.currentPage === p ? classes.selectedPage : classes.unSelectedPage}>{p}</span>)}
-                </div>
-                {this.props.users.map(u => {
-                    return (
-                        <div className={classes.container} key={u.id}>
-                            <div className={classes.item}>
-                                <div className={classes.item_img}>
+                {pages.map(p => <span onClick={() => {
+                    props.onPageChanged(p)
+                }} className={props.currentPage === p ? classes.selectedPage : classes.unSelectedPage}>{p}</span>)}
+            </div>
+            {props.users.map(u => {
+                let path = `/profile/${u.id}`
+                return (
+                    <div className={classes.container} key={u.id}>
+                        <div className={classes.item}>
+                            <div className={classes.item_img}>
+                                <NavLink to={path}>
                                     <img className={classes.img}
                                          src={u.photos.small != null ? u.photos.small : userDefaultPhoto}
                                          alt=""/>
-                                </div>
-                                <div className={classes.description}>
-                                    <div className={classes.name}>
-                                        {u.name}
-                                        {u.followed ? <button className={classes.button} onClick={() => {
-                                                this.props.onChangeUnFollow(u.id)
-                                            }}> unfollow</button> :
-                                            <button className={classes.button} onClick={() => {
-                                                this.props.onChangeFollow(u.id)
-                                            }}>follow</button>}
-                                    </div>
-                                    <div className={classes.location_status}>
-                                        <div>
-                                            status: '{u.status}'
-                                        </div>
-                                        <div>
-                                            country: {'u.location.country'}
-                                        </div>
-                                        <div>
-                                            city: {'u.location.city'}
-                                        </div>
-                                    </div>
+                                </NavLink>
 
-
+                            </div>
+                            <div className={classes.description}>
+                                <div className={classes.name}>
+                                    {u.name}
+                                    {u.followed ? <button className={classes.button} onClick={() => {
+                                            props.onChangeUnFollow(u.id)
+                                        }}> unfollow</button> :
+                                        <button className={classes.button} onClick={() => {
+                                            props.onChangeFollow(u.id)
+                                        }}>follow</button>}
                                 </div>
+                                <div className={classes.location_status}>
+                                    <div>
+                                        status: '{u.status}'
+                                    </div>
+                                    <div>
+                                        country: {'u.location.country'}
+                                    </div>
+                                    <div>
+                                        city: {'u.location.city'}
+                                    </div>
+                                </div>
+
 
                             </div>
 
                         </div>
-                    )
-                })}
-            </div>
-        )
-    }
-}
 
-export default Users
+                    </div>
+                )
+            })}
+        </div>
+    )
+}

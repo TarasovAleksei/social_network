@@ -1,6 +1,13 @@
 import { v1 } from "uuid";
-import {friendsPageType} from "./redux-store";
-let initialState = {
+export type friendsType = {
+    id: string,
+    name: string,
+    url: string
+}
+export type friendsPageType = {
+    friends: friendsType[]
+}
+let initialState:friendsPageType = {
     friends: [
         {
             id: v1(),
@@ -16,6 +23,6 @@ let initialState = {
     ]
 }
 
-export const FriendsReducer = (state:friendsPageType=initialState, action:any)=>{
+export const FriendsReducer = (state:friendsPageType=initialState, action:any):friendsPageType=>{
     return state
 }

@@ -1,58 +1,34 @@
 import React, {ChangeEvent} from "react";
+import {AppStateType} from "../../redux/redux-store";
 import {
-    addPostType, AppStateType,
-    dispatchType,
-    postMessageType,
-    postType,
-} from "../../redux/redux-store";
-import {addPostAC, updateNewPostTextAC} from "../../redux/profileReducer";
+    addPostAC,
+    initialStateType,
+    updateNewPostTextAC
+} from "../../redux/profileReducer";
 import MyPosts from "./MyPosts";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-// type PropsType = {
-//     store: StoreType
-// }
 
-// const MyPostsContainer = (props: PropsType) => {
-//     const store = props.store
-//     const onChangeInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-//         store.dispatch(updateNewPostTextAC(event.currentTarget.value))
-//     }
-//     const addNewPost = () => {
-//         store.dispatch(addPostAC())
-//     }
-//
-//     return (
-//         <MyPosts addNewPost={addNewPost} posts={store.getState().profilePage.posts}
-//             newPostText={store.getState().profilePage.newPostText}
-//                  onChangeInputHandler={onChangeInputHandler}/>
-//     )
-// }
-
-export type MapStatePropsType = {
-    posts: postType[]
-    newPostText: postMessageType
-}
-export type MapDispatchPropsType = {
-    addNewPost: addPostType
-    onChangeInputHandler: (event: ChangeEvent<HTMLInputElement>) => void
-}
-const MapStateToProps = (state: AppStateType): MapStatePropsType => {
-    return {
-        posts: state.profilePage.posts,
-        newPostText: state.profilePage.newPostText
+export const MyPostsContainer = () => {
+    const {posts, newPostText} = useSelector<AppStateType, initialStateType>((state) =>
+        state.profilePage
+    )
+    const dispatch = useDispatch()
+    const addPostCallBack = () => {
+        dispatch(addPostAC())
     }
-}
-const MapDispatchToProps = (dispatch: dispatchType): MapDispatchPropsType => {
-    return {
-        addNewPost: () => {
-            dispatch(addPostAC())
-        },
-        onChangeInputHandler: (event: ChangeEvent<HTMLInputElement>) => {
-            dispatch(updateNewPostTextAC(event.currentTarget.value))
-        }
+    const onChangeInputHandlerCallBack = (event: ChangeEvent<HTMLInputElement>) => {
+        dispatch(updateNewPostTextAC(event.currentTarget.value))
     }
+    return (
+        <MyPosts
+            posts={posts}
+            newPostText={newPostText}
+            addNewPost={addPostCallBack}
+            onChangeInputHandler={onChangeInputHandlerCallBack}
+        />
+    )
 }
 
-const MyPostsContainer = connect(MapStateToProps, MapDispatchToProps)(MyPosts)
-export default MyPostsContainer
+
+

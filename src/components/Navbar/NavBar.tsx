@@ -1,7 +1,8 @@
 import React from "react";
 import classes from './NavBar.module.css';
 import {NavLink} from "react-router-dom";
-import {friendsPageType} from "../redux/redux-store";
+import {friendsPageType} from "../redux/friendsReducer";
+
 
 type PropsType = {
     friendsPage: friendsPageType
@@ -13,11 +14,9 @@ const NavBar = (props: PropsType) => {
             <div className={classes.friendsItems} key={f.id}>
                 <div className={classes.friendsItem}>
                     <img src={f.url} alt="logoFriend"/>
-
                     <div>{f.name}</div>
                 </div>
             </div>
-
         )
     })
     return (

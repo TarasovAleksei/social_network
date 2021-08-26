@@ -1,13 +1,14 @@
 import React, {ChangeEvent} from "react";
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {postMessageType, postType} from "../../redux/redux-store";
+import {postType} from "../../redux/profileReducer";
+
 
 type PropsType = {
-    posts: postType[]
-    newPostText: postMessageType
-    addNewPost: () => void
-    onChangeInputHandler: (event: ChangeEvent<HTMLInputElement>) => void
+    posts: postType[],
+    newPostText: string,
+    addNewPost: () => void,
+    onChangeInputHandler: (event: ChangeEvent<HTMLInputElement>) => void,
 }
 
 const MyPosts = (props: PropsType) => {
