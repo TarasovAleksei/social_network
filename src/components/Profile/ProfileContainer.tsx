@@ -18,6 +18,7 @@ export const ProfileContainer = () => {
         axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userID}`)
             .then(response => {
                 dispatch(setUserProfile(response.data))
+                console.log(response.data)
             })
     }, [dispatch, userID])
 
