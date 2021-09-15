@@ -1,3 +1,6 @@
+import {Dispatch} from "react";
+import {API} from "../../api/api";
+
 export type SetUsersActionType = {
     type: "SET_USERS",
     payload: { users: UserType[] }
@@ -16,11 +19,16 @@ export type SetCurrentPageActionType = {
 }
 export type SetTotalUsersCountActionType = {
     type: "SET_TOTAL_USERS_COUNT",
-    payload: { totalUsersCount: number }
+    payload: { totalCount: number }
 }
 export type SetToggleFetchingActionType = {
     type: "SET_TOGGLE_FETCHING",
     payload: { isFetching: boolean }
+}
+export type SetFollowingInProgressType = {
+    type: "SET_FOLLOWING_IN_PROGRESS",
+    id: string,
+    isFetching: boolean,
 }
 export type totalActionType =
     FollowedActionType
@@ -29,12 +37,14 @@ export type totalActionType =
     | SetCurrentPageActionType
     | SetTotalUsersCountActionType
     | SetToggleFetchingActionType
+    | SetFollowingInProgressType
 export type InitialStateType = {
     users: UserType[],
     pageSize: number,
-    totalUsersCount: number,
+    totalCount: number,
     currentPage: number,
     isFetching: boolean,
+    followingInProgress: string[],
 }
 export type UserType = {
     name: string,
@@ -51,9 +61,10 @@ export type UserType = {
 let initialState = {
     users: [],
     pageSize: 5,
-    totalUsersCount: 0,
+    totalCount: 0,
     currentPage: 1,
     isFetching: false,
+    followingInProgress: []
 }
 
 export const UsersReducer = (state: InitialStateType = initialState, action: totalActionType): InitialStateType => {
@@ -76,10 +87,17 @@ export const UsersReducer = (state: InitialStateType = initialState, action: tot
                 ...state,
                 ...action.payload
             }
+        case "SET_FOLLOWING_IN_PROGRESS":
+            return {
+                ...state,
+                followingInProgress: action.isFetching ?
+                    [...state.followingInProgress, action.id]
+                    : state.followingInProgress.filter(f => f !== action.id)
+            }
     }
     return state
 }
-
+//actions
 export const onChangeFollow = (id: string): FollowedActionType => {
     return {
         type: 'FOLLOW',
@@ -106,10 +124,10 @@ export const setCurrentPage = (currentPage: number): SetCurrentPageActionType =>
         payload: {currentPage}
     }
 }
-export const setTotalUsersCount = (totalUsersCount: number): SetTotalUsersCountActionType => {
+export const setTotalUsersCount = (totalCount: number): SetTotalUsersCountActionType => {
     return {
         type: 'SET_TOTAL_USERS_COUNT',
-        payload: {totalUsersCount}
+        payload: {totalCount}
     }
 }
 export const setToggleFetching = (isFetching: boolean): SetToggleFetchingActionType => {
@@ -117,4 +135,36 @@ export const setToggleFetching = (isFetching: boolean): SetToggleFetchingActionT
         type: "SET_TOGGLE_FETCHING",
         payload: {isFetching}
     }
+}
+export const setFollowingInProgress = (isFetching: boolean, id: string): SetFollowingInProgressType => {
+    return {
+        type: "SET_FOLLOWING_IN_PROGRESS",
+        id,
+        isFetching
+    }
+}
+
+//thunks
+export const getUsersTC = (currentPage: number, pageSize: number) => (dispatch:Dispatch<totalActionType>) => {
+    dispatch(setToggleFetching(true))
+    API.usersAPI.getUsersAPI(currentPage, pageSize).then(response => {
+        dispatch(setToggleFetching(false))
+        dispatch(setUsers(response.items))
+        dispatch(setCurrentPage(currentPage))
+        dispatch(setTotalUsersCount(response.totalCount / 100))
+    })
+}
+export const followTC = (id: string) => (dispatch: Dispatch<totalActionType>) => {
+    dispatch(setFollowingInProgress(true, id))
+    API.usersAPI.setUnfollowAPI(id).then(response => {
+        if (response.resultCode === 0) dispatch(onChangeUnFollow(id))
+        dispatch(setFollowingInProgress(false, id))
+    })
+}
+export const unFollowTC = (id: string) => (dispatch: Dispatch<totalActionType>) => {
+    dispatch(setFollowingInProgress(true, id))
+    API.usersAPI.setFollowAPI(id).then(response => {
+        if (response.resultCode === 0) dispatch(onChangeFollow(id))
+        dispatch(setFollowingInProgress(false, id))
+    })
 }

@@ -1,24 +1,21 @@
 import React from "react";
 import userDefaultPhoto from "../../assets/images/no_foto.jpeg";
 import classes from './Users.module.css'
-import { UserType} from "../redux/usersReducer";
-import { NavLink } from "react-router-dom";
-
+import {UserType} from "../redux/usersReducer";
+import {NavLink} from "react-router-dom";
 
 type PropsType = {
     users: UserType[],
     pageSize: number,
-    totalUsersCount: number,
+    totalCount: number,
     currentPage: number,
-    onChangeFollow: (userID: string) => void,
-    onChangeUnFollow: (userID: string) => void,
-    setUsers: (users: UserType[]) => void,
-    setCurrentPage: (currentPage: number) => void,
-    setTotalUsersCount: (totalUsersCount: number) => void,
-    onPageChanged: (pageNumber: number)=> void
+    followingInProgress: string[],
+    followCallback: (userID: string) => void,
+    unFollowCallback: (userID: string) => void,
+    onPageChanged: (pageNumber: number) => void,
 }
 export const Users = (props: PropsType) => {
-    const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
+    const pagesCount = Math.ceil(props.totalCount / props.pageSize)
     let pages = []
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
@@ -26,7 +23,7 @@ export const Users = (props: PropsType) => {
     return (
         <div>
             <div>
-                {pages.map(p => <span onClick={() => {
+                {pages.map(p => <span key={p} onClick={() => {
                     props.onPageChanged(p)
                 }} className={props.currentPage === p ? classes.selectedPage : classes.unSelectedPage}>{p}</span>)}
             </div>
@@ -46,12 +43,15 @@ export const Users = (props: PropsType) => {
                             <div className={classes.description}>
                                 <div className={classes.name}>
                                     {u.name}
-                                    {u.followed ? <button className={classes.button} onClick={() => {
-                                            props.onChangeUnFollow(u.id)
+                                    {u.followed ? <button disabled={props.followingInProgress.some(s => s === u.id)}
+                                                          className={classes.unfollowedButton} onClick={() => {
+                                            props.unFollowCallback(u.id)
                                         }}> unfollow</button> :
-                                        <button className={classes.button} onClick={() => {
-                                            props.onChangeFollow(u.id)
-                                        }}>follow</button>}
+                                        <button disabled={props.followingInProgress.some(s => s === u.id)}
+                                                className={classes.button}
+                                                onClick={() => {
+                                                    props.followCallback(u.id)
+                                                }}>follow</button>}
                                 </div>
                                 <div className={classes.location_status}>
                                     <div>
@@ -64,12 +64,8 @@ export const Users = (props: PropsType) => {
                                         city: {'u.location.city'}
                                     </div>
                                 </div>
-
-
                             </div>
-
                         </div>
-
                     </div>
                 )
             })}

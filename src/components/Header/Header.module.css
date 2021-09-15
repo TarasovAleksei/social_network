@@ -1,7 +1,27 @@
 .header {
     grid-area: h;
     background-color: #cce5f5;
+
 }
-.header img {
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.container img {
     width: 40px;
+}
+.login {
+    color: #02477b;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+}
+.login a{
+    text-decoration: none;
+}
+.login a.activeLink{
+    color: #2873a5;
 }

@@ -1,28 +1,28 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import {
     AppStateType,
 } from "../redux/redux-store";
-import {addMessageAC, dialogsPageType, onChangeMessageAC} from "../redux/dialogsReducer";
+import {addMessageAC, dialogsPageType} from "../redux/dialogsReducer";
 import Dialogs from "./Dialogs";
 import {useDispatch, useSelector} from "react-redux";
+import {InitialStateType} from "../redux/authReducer";
+import { Redirect } from "react-router-dom";
 
 
 export const DialogsContainer = () => {
-    const {messages, dialogs, newMessage} = useSelector<AppStateType, dialogsPageType>((state) => state.dialogsPage)
+    const {isAuth} = useSelector<AppStateType, InitialStateType>(state=>state.auth)
+    const {messages, dialogs} = useSelector<AppStateType, dialogsPageType>((state) => state.dialogsPage)
     const dispatch = useDispatch()
-    const addMessageCallBack = () => {
-        dispatch(addMessageAC())
+    const addMessageCallBack = (data:string) => {
+        dispatch(addMessageAC(data))
     }
-    const onChangeMessageHandlerCallBack = (event: ChangeEvent<HTMLInputElement>) => {
-        dispatch(onChangeMessageAC(event.currentTarget.value))
-    }
+
+    if(!isAuth) return <Redirect to={'/login'}/>
     return (
         <Dialogs
             messages={messages}
             dialogs={dialogs}
-            newMessage={newMessage}
             addMessage={addMessageCallBack}
-            onChangeMessageHandler={onChangeMessageHandlerCallBack}
         />
     )
 }

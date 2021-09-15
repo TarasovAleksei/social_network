@@ -4,7 +4,6 @@ export type newMessageType = string;
 export type dialogsPageType = {
     dialogs: dialogType[],
     messages: messageType[],
-    newMessage: newMessageType
 }
 export type dialogType = {
     id: string,
@@ -16,13 +15,10 @@ export type messageType = {
     message: string
 }
 export type AddMessageActionType = {
-    type: 'ADD-MESSAGE'
+    type: 'ADD-MESSAGE',
+    message: string,
 }
-export type OnChangeMessageActionType = {
-    type: 'ON-CHANGE-MESSAGE',
-    newMessage: string
-}
-export type TotalActionMessageType = AddMessageActionType | OnChangeMessageActionType
+export type TotalActionMessageType = AddMessageActionType
 let initialState = {
         dialogs: [
             {
@@ -53,7 +49,6 @@ let initialState = {
             {id: v1(), message: 'How are you'},
             {id: v1(), message: 'What is up?'}
         ],
-        newMessage: ''
     }
 
 export const DialogsReducer = (state: dialogsPageType = initialState, action: TotalActionMessageType): dialogsPageType => {
@@ -62,34 +57,22 @@ export const DialogsReducer = (state: dialogsPageType = initialState, action: To
         case "ADD-MESSAGE": {
             let newMessageEl: messageType = {
                 id: v1(),
-                message: state.newMessage
+                message: action.message
             }
-
             return {
                 ...state,
                 messages:
                     [...state.messages, newMessageEl],
-                newMessage: ''
             }
 
         }
-        case "ON-CHANGE-MESSAGE":
-            return {
-                ...state,
-                newMessage: action.newMessage
-            }
         default:
             return state
     }
 }
-export const addMessageAC = (): AddMessageActionType => {
+export const addMessageAC = (message:string): AddMessageActionType => {
     return {
-        type: 'ADD-MESSAGE'
-    }
-}
-export const onChangeMessageAC = (newMessage: string): OnChangeMessageActionType => {
-    return {
-        type: 'ON-CHANGE-MESSAGE',
-        newMessage: newMessage
+        type: 'ADD-MESSAGE',
+        message:message,
     }
 }

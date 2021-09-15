@@ -1,7 +1,10 @@
 import React from "react";
 import classes from './NavBar.module.css';
-import {NavLink} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import {friendsPageType} from "../redux/friendsReducer";
+import {useSelector} from "react-redux";
+import {AppStateType} from "../redux/redux-store";
+
 
 
 type PropsType = {
@@ -9,6 +12,7 @@ type PropsType = {
 }
 
 const NavBar = (props: PropsType) => {
+    const isMe = useSelector<AppStateType, boolean>((state) => state.profilePage.isMe)
     const friendsElement = props.friendsPage.friends.map(f => {
         return (
             <div className={classes.friendsItems} key={f.id}>
@@ -21,7 +25,10 @@ const NavBar = (props: PropsType) => {
     })
     return (
         <nav className={classes.nav}>
-            <div className={classes.item}><NavLink activeClassName={classes.activeLink} to="/profile">Profile</NavLink>
+            <div className={classes.item}><NavLink activeClassName={classes.activeLink}
+            to="/profile">
+                {isMe? 'Profile - my page':'Profile'}
+            </NavLink>
             </div>
             <div className={classes.item}>< NavLink activeClassName={classes.activeLink} to="/dialogs">Messages
             </NavLink>

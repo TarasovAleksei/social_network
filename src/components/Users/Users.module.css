@@ -33,6 +33,7 @@
     margin-top: 10px;
     width: 100px;
 }
+
 .button {
     margin-top: 20px;
     text-align: center;
@@ -47,12 +48,29 @@
     text-shadow: 0 1px 1px #0466ac;
     cursor: pointer;
 }
-.button:hover {
+
+.unfollowedButton {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 700;
+    background: #e01fc8;
+    height: 25px;
+    width: 70px;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    text-shadow: 0 1px 1px #d957ea;
+    cursor: pointer;
+}
+
+.button:hover, .unfollowedButton:hover {
     background: #fff;
-    color:dodgerBlue;
+    color: dodgerBlue;
     border-color: dodgerBlue;
     box-shadow: 0 0 8px 0 dodgerBlue;
 }
+
 .location_status {
     font-size: 18px;
     display: flex;
@@ -62,13 +80,14 @@
     margin-top: 10px;
 
 }
+
 .selectedPage {
     margin-left: 5px;
     font-weight: 700;
     color: white;
 }
+
 .unSelectedPage {
     cursor: pointer;
     margin-left: 5px;
-
 }
