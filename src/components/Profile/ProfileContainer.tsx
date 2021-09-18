@@ -32,8 +32,7 @@ export const ProfileContainer = () => {
         } else if (!myId) {
             userID = '2'
             dispatch(setIsMe(false))
-        }
-        else if(userID){
+        } else if (userID) {
             dispatch(setIsMe(false))
         }
         dispatch(getProfile(userID))

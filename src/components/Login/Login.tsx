@@ -23,6 +23,8 @@ export const Login = () => {
     )
 }
 export const LoginForm = () => {
+    const {message} = useSelector<AppStateType, InitialStateType>(state=>state.auth)
+    console.log(message)
     const dispatch = useDispatch()
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>({mode: "onChange"});
     const onSubmit: SubmitHandler<Inputs> = data => dispatch(loginIn(data.email, data.password, data.rememberMe))
@@ -30,10 +32,10 @@ export const LoginForm = () => {
         <form className = {classes.container} onSubmit={handleSubmit(onSubmit)}>
             <input placeholder="email" {...register('email',  {required: true, maxLength:30 })} />
             {errors.email && <span>field is errored</span>}
-
             <input type={'password'} placeholder="password"{...register("password", {required: true})} />
             {errors.password && <span>field is errored</span>}
             <input type='checkbox'{...register("rememberMe")} />
+            {message&&<div className={classes.errorMessage}>{message}</div>}
             <input value={'Sign in'} type="submit"/>
         </form>
     )
