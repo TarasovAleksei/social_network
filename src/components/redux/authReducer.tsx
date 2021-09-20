@@ -56,7 +56,7 @@ export const setMessagesLogin = (message: string | null) => {
 }
 //thunks
 export const getAuthMeTC = () => (dispatch: Dispatch<TotalActionType>) => {
-    API.authAPI.getAuthMeAPI().then(response => {
+    return API.authAPI.getAuthMeAPI().then(response => {
         const {id, email, login} = response.data.data
         if (response.data.resultCode === 0) {
             dispatch(setAuthUserData(id, email, login, true))

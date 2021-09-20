@@ -13,8 +13,9 @@ import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import {HeaderContainer} from "./components/Header/HeaderContainer";
 import {Login} from "./components/Login/Login";
 import {useDispatch, useSelector} from "react-redux";
-import {getAuthMeTC, InitialStateType} from "./components/redux/authReducer";
-
+import {logOut} from "./components/redux/authReducer";
+import {initializeApp, InitialStateType} from "./components/redux/appReducer";
+import {Preloader} from "./components/common/preloader/Preloader";
 
 
 type PropsType = {
@@ -22,18 +23,28 @@ type PropsType = {
 }
 
 const App = (props: PropsType) => {
+    const {initialized} = useSelector<AppStateType, InitialStateType>(state => state.app)
+    console.log(initialized)
     const friendsPage = props.store.friendsPage
-    const {isAuth} = useSelector<AppStateType, InitialStateType>(state => state.auth)
-    console.log(isAuth)
+    const dispatch = useDispatch()
+    const logoutCB = () => {
+        dispatch(logOut())
+    }
+    useEffect(() => {
+        dispatch(initializeApp())
+    }, [dispatch])
 
+    if (!initialized) return <Preloader/>
     return (
         <div className='app-wrapper'>
-            <HeaderContainer/>
+            <HeaderContainer
+                logoutCB={logoutCB}
+            />
             <NavBar friendsPage={friendsPage}/>
             <div className='app-wrapper-content'>
-                <Route exact path="/" render={() => <ProfileContainer/>} />
+                {/*<Route exact path="/" render={() => <ProfileContainer/>} />*/}
                 <Route path='/profile/:userID?' render={() => <ProfileContainer/>}/>
-                <Route path='/dialogs/' render={() => <DialogsContainer />}/>
+                <Route path='/dialogs/' render={() => <DialogsContainer/>}/>
                 <Route path='/users' render={() => <UsersContainer/>}/>
                 <Route path='/news' render={() => <News/>}/>
                 <Route path='/music' render={() => <Music/>}/>
