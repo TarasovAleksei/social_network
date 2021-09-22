@@ -16,7 +16,7 @@ export type InitialStateType = {
     isAuth: boolean,
     message: string | null
 }
-type TotalActionType = setAuthUserDataType | setMessagesLoginType
+export type TotalActionType = setAuthUserDataType | setMessagesLoginType
 type setAuthUserDataType = ReturnType<typeof setAuthUserData>
 type setMessagesLoginType = ReturnType<typeof setMessagesLogin>
 export const AuthReducer = (state: InitialStateType = initialState, action: TotalActionType): InitialStateType => {

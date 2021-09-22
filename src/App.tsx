@@ -3,7 +3,7 @@ import './App.css';
 import NavBar from "./components/Navbar/NavBar";
 import Friends from "./components/Friends/Friends";
 import Music from "./components/Music/Music";
-import {Redirect, Route, useParams} from "react-router-dom"
+import {Route} from "react-router-dom"
 import News from "./components/News/News";
 import Settings from "./components/Settings/Settings";
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
@@ -42,7 +42,7 @@ const App = (props: PropsType) => {
             />
             <NavBar friendsPage={friendsPage}/>
             <div className='app-wrapper-content'>
-                {/*<Route exact path="/" render={() => <ProfileContainer/>} />*/}
+                <Route exact path="/" render={() => <ProfileContainer/>} />
                 <Route path='/profile/:userID?' render={() => <ProfileContainer/>}/>
                 <Route path='/dialogs/' render={() => <DialogsContainer/>}/>
                 <Route path='/users' render={() => <UsersContainer/>}/>

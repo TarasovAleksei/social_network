@@ -3,6 +3,7 @@ import userDefaultPhoto from "../../assets/images/no_foto.jpeg";
 import classes from './Users.module.css'
 import {UserType} from "../redux/usersReducer";
 import {NavLink} from "react-router-dom";
+import {Pagination} from "antd";
 
 type PropsType = {
     users: UserType[],
@@ -26,7 +27,9 @@ export const Users = (props: PropsType) => {
                 {pages.map(p => <span key={p} onClick={() => {
                     props.onPageChanged(p)
                 }} className={props.currentPage === p ? classes.selectedPage : classes.unSelectedPage}>{p}</span>)}
+
             </div>
+            <Pagination current={props.currentPage} total={props.totalCount} />
             {props.users.map(u => {
                 let path = `/profile/${u.id}`
                 return (

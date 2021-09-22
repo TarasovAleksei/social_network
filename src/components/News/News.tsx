@@ -1,8 +1,11 @@
 import React from "react";
 
 const News = ()=> {
-    return (
+    return (<>
         <div>News</div>
+    </>
+
+
     )
 }
 export default News
