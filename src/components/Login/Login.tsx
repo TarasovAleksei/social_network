@@ -12,7 +12,7 @@ export type Inputs = {
     password: string|null,
     rememberMe: boolean,
 };
-export const Login = () => {
+export const Login = React.memo(() => {
     const {isAuth} = useSelector<AppStateType, InitialStateType>(state=>state.auth)
     if(isAuth) return <Redirect to={'/profile'}/>
     return (
@@ -21,8 +21,8 @@ export const Login = () => {
             <LoginForm/>
         </div>
     )
-}
-export const LoginForm = () => {
+})
+export const LoginForm = React.memo(() => {
     const {message} = useSelector<AppStateType, InitialStateType>(state=>state.auth)
     console.log(message)
     const dispatch = useDispatch()
@@ -39,4 +39,4 @@ export const LoginForm = () => {
             <input value={'Sign in'} type="submit"/>
         </form>
     )
-}
+})

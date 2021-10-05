@@ -10,7 +10,7 @@ type PropsType = {
     updateStatusCB:(status:StatusType)=>void
     isMe: boolean,
 }
-const Profile = (props: PropsType) => {
+const Profile = React.memo((props: PropsType) => {
     return (
         <div className={classes.profile}>
             <ProfileInfo
@@ -22,5 +22,5 @@ const Profile = (props: PropsType) => {
             <MyPostsContainer/>
         </div>
     )
-}
+})
 export default Profile

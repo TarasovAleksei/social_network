@@ -14,7 +14,7 @@ type PropsType = {
     addMessage: (data: string) => void,
 }
 
-const Dialogs = (props: PropsType) => {
+const Dialogs = React.memo((props: PropsType) => {
     const dialogsElement = props.dialogs.map(d => {
         return (
             <DialogItem key={d.id} id={d.id} name={d.name} url={d.url}/>
@@ -44,5 +44,5 @@ const Dialogs = (props: PropsType) => {
             </div>
         </div>
     )
-}
+})
 export default Dialogs

@@ -31,11 +31,12 @@ export type SetProfileStatusActionType = {
     status: StatusType,
 }
 export type setIsMeType = ReturnType<typeof setIsMe>
+export type DeletePostActionType = ReturnType<typeof deletePostAC>
 export type TotalActionPostType =
     AddPostActionType
     | UpdateNewPostTextActionType
     | SetUserProfileActionType
-    | SetProfileStatusActionType | setIsMeType
+    | SetProfileStatusActionType | setIsMeType | DeletePostActionType
 export type initialStateType = typeof initialState
 export type StatusType = string | null
 let initialState = {
@@ -98,6 +99,12 @@ export const ProfileReducer = (state: initialStateType = initialState, action: T
                 posts: [...state.posts, newPost],
             }
         }
+        case "DELETE-POST": {
+            return {
+                ...state,
+                posts: state.posts.filter(p=>p.id!==action.id),
+            }
+        }
         case "SET-USER-PROFILE":
             return {
                 ...state,
@@ -124,6 +131,13 @@ export const addPostAC = (data:string): AddPostActionType => {
         data: data,
     } as const
 }
+export const deletePostAC = (id:string)=>{
+    return {
+        type: 'DELETE-POST',
+        id
+    }as const
+}
+
 export const setUserProfile = (profile: ProfileType): SetUserProfileActionType => {
     return {
         type: "SET-USER-PROFILE",

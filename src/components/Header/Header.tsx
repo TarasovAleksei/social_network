@@ -9,7 +9,7 @@ type PropsType = {
     isAuth: boolean,
     logoutCB: () => void
 }
-const Header = (props: PropsType) => {
+const Header = React.memo((props: PropsType) => {
     return (
         <header className={classes.header}>
             <div className={classes.container}>
@@ -35,5 +35,5 @@ const Header = (props: PropsType) => {
             </div>
         </header>
     )
-}
+})
 export default Header

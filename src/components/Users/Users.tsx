@@ -3,7 +3,6 @@ import userDefaultPhoto from "../../assets/images/no_foto.jpeg";
 import classes from './Users.module.css'
 import {UserType} from "../redux/usersReducer";
 import {NavLink} from "react-router-dom";
-import {Pagination} from "antd";
 
 type PropsType = {
     users: UserType[],
@@ -15,7 +14,7 @@ type PropsType = {
     unFollowCallback: (userID: string) => void,
     onPageChanged: (pageNumber: number) => void,
 }
-export const Users = (props: PropsType) => {
+export const Users = React.memo((props: PropsType) => {
     const pagesCount = Math.ceil(props.totalCount / props.pageSize)
     let pages = []
     for (let i = 1; i <= pagesCount; i++) {
@@ -29,7 +28,6 @@ export const Users = (props: PropsType) => {
                 }} className={props.currentPage === p ? classes.selectedPage : classes.unSelectedPage}>{p}</span>)}
 
             </div>
-            <Pagination current={props.currentPage} total={props.totalCount} />
             {props.users.map(u => {
                 let path = `/profile/${u.id}`
                 return (
@@ -39,7 +37,7 @@ export const Users = (props: PropsType) => {
                                 <NavLink to={path}>
                                     <img className={classes.img}
                                          src={u.photos.small != null ? u.photos.small : userDefaultPhoto}
-                                         alt=""/>
+                                         alt="myPhoto"/>
                                 </NavLink>
 
                             </div>
@@ -74,4 +72,4 @@ export const Users = (props: PropsType) => {
             })}
         </div>
     )
-}
+})

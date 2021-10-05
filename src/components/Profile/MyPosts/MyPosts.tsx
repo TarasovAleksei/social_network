@@ -12,7 +12,7 @@ type PropsType = {
     addNewPost: (data: string) => void,
 }
 
-const MyPosts = (props: PropsType) => {
+const MyPosts = React.memo((props: PropsType) => {
     const {register, handleSubmit, formState: {errors}} = useForm<inputForPostType>();
     const onSubmit: SubmitHandler<inputForPostType> = data => props.addNewPost(data.post)
 
@@ -31,5 +31,5 @@ const MyPosts = (props: PropsType) => {
             {postElement}
         </div>
     )
-}
+})
 export default MyPosts

@@ -11,7 +11,7 @@ type PropsType = {
     updateStatusCB: (status: StatusType) => void,
     isMe: boolean,
 }
-const ProfileInfo = (props: PropsType) => {
+const ProfileInfo = React.memo((props: PropsType) => {
     return (<>
             {!Object.keys(props.profile).length && <span>
                 <Preloader/> not found</span>} {
@@ -53,5 +53,5 @@ const ProfileInfo = (props: PropsType) => {
             </div>}
         </>
     )
-}
+})
 export default ProfileInfo

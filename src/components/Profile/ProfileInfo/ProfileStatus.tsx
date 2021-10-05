@@ -7,7 +7,7 @@ type PropsType = {
     isMe: boolean,
     updateStatusCB: (status: StatusType) => void
 }
-export const ProfileStatus = (props: PropsType) => {
+export const ProfileStatus = React.memo((props: PropsType) => {
     const [editMode, setEditMode] = useState<boolean>(false)
     const [statusValue, setStatusValue] = useState<any>(props.status)
     useEffect(() => {
@@ -35,4 +35,4 @@ export const ProfileStatus = (props: PropsType) => {
                 <span onDoubleClick={activateEditMode}>{props.status ? `🖉   ${props.status}` : 'no status'}</span>
             </div>
     )
-}
+})

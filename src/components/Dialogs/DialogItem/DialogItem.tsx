@@ -7,7 +7,7 @@ type PropsType = {
     name: string,
     url: string
 }
-const DialogItem = (props: PropsType) => {
+const DialogItem = React.memo((props: PropsType) => {
     let path = `/dialogs/${props.id}`
     return (
         <div className={classes.item}>
@@ -19,6 +19,6 @@ const DialogItem = (props: PropsType) => {
             </NavLink>
         </div>
     )
-}
+})
 
 export default DialogItem
