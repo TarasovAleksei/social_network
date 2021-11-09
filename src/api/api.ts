@@ -3,7 +3,7 @@ import {ProfileType, StatusType} from "../components/redux/profileReducer";
 
 const axiosInstance = axios.create({
     withCredentials: true,
-    headers: {'API-KEY': 'de342f74-3acb-43a4-b6f0-3143b51bea1e'},
+    // headers: {'API-KEY': 'de342f74-3acb-43a4-b6f0-3143b51bea1e'},
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
 })
 export type ResponseType<D={}>={
