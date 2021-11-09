@@ -24,10 +24,9 @@ export const Login = React.memo(() => {
 })
 export const LoginForm = React.memo(() => {
     const {message} = useSelector<AppStateType, InitialStateType>(state=>state.auth)
-    console.log(message)
     const dispatch = useDispatch()
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>({mode: "onChange"});
-    const onSubmit: SubmitHandler<Inputs> = data => dispatch(loginIn(data.email, data.password, data.rememberMe))
+    const onSubmit: SubmitHandler<Inputs> = (data) => dispatch(loginIn(data.email, data.password, data.rememberMe))
     return (
         <form className = {classes.container} onSubmit={handleSubmit(onSubmit)}>
             <input placeholder="email" {...register('email',  {required: true, maxLength:30 })} />

@@ -46,6 +46,5 @@ export const UsersContainer = () => {
             onPageChanged={onPageChanged}
             followingInProgress={followingInProgress}
         />}
-
     </>
 }

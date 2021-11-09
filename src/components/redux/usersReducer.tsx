@@ -101,14 +101,14 @@ export const UsersReducer = (state: InitialStateType = initialState, action: tot
 export const onChangeFollow = (id: string): FollowedActionType => {
     return {
         type: 'FOLLOW',
-        id: id
+        id
     }
 
 }
 export const onChangeUnFollow = (id: string): UnFollowedActionType => {
     return {
         type: 'UNFOLLOW',
-        id: id
+        id
     }
 }
 export const setUsers = (users: UserType[]): SetUsersActionType => {
@@ -145,26 +145,26 @@ export const setFollowingInProgress = (isFetching: boolean, id: string): SetFoll
 }
 
 //thunks
-export const getUsersTC = (currentPage: number, pageSize: number) => (dispatch:Dispatch<totalActionType>) => {
+const followUnfollowFlow = async (id: string, dispatch: Dispatch<totalActionType>, apiMethod: any, actionCreator: FollowedActionType | UnFollowedActionType) => {
+    dispatch(setFollowingInProgress(true, id))
+    let response = await apiMethod(id)
+    if (response.data.resultCode === 0) dispatch(actionCreator)
+    dispatch(setFollowingInProgress(false, id))
+
+}
+export const getUsersTC = (currentPage: number, pageSize: number) => async (dispatch: Dispatch<totalActionType>) => {
     dispatch(setToggleFetching(true))
-    API.usersAPI.getUsersAPI(currentPage, pageSize).then(response => {
-        dispatch(setToggleFetching(false))
-        dispatch(setUsers(response.items))
-        dispatch(setCurrentPage(currentPage))
-        dispatch(setTotalUsersCount(response.totalCount / 100))
-    })
+    let response = await API.usersAPI.getUsersAPI(currentPage, pageSize)
+    dispatch(setToggleFetching(false))
+    dispatch(setUsers(response.data.items))
+    dispatch(setCurrentPage(currentPage))
+    dispatch(setTotalUsersCount(response.data.totalCount))
 }
-export const followTC = (id: string) => (dispatch: Dispatch<totalActionType>) => {
-    dispatch(setFollowingInProgress(true, id))
-    API.usersAPI.setUnfollowAPI(id).then(response => {
-        if (response.resultCode === 0) dispatch(onChangeUnFollow(id))
-        dispatch(setFollowingInProgress(false, id))
-    })
+export const followTC = (id: string) => async (dispatch: Dispatch<totalActionType>) => {
+    const apiMethod = API.usersAPI.setUnfollowAPI
+    followUnfollowFlow(id, dispatch, apiMethod, onChangeUnFollow(id))
 }
-export const unFollowTC = (id: string) => (dispatch: Dispatch<totalActionType>) => {
-    dispatch(setFollowingInProgress(true, id))
-    API.usersAPI.setFollowAPI(id).then(response => {
-        if (response.resultCode === 0) dispatch(onChangeFollow(id))
-        dispatch(setFollowingInProgress(false, id))
-    })
+export const unFollowTC = (id: string) => async (dispatch: Dispatch<totalActionType>) => {
+    const apiMethod = API.usersAPI.setFollowAPI
+    followUnfollowFlow(id, dispatch, apiMethod, onChangeFollow(id))
 }

@@ -55,28 +55,27 @@ export const setMessagesLogin = (message: string | null) => {
 
 }
 //thunks
-export const getAuthMeTC = () => (dispatch: Dispatch<TotalActionType>) => {
-    return API.authAPI.getAuthMeAPI().then(response => {
+export const getAuthMeTC = () => async (dispatch: Dispatch<TotalActionType>) => {
+    let response = await API.authAPI.getAuthMeAPI()
+    if (response.data.resultCode === 0) {
         const {id, email, login} = response.data.data
-        if (response.data.resultCode === 0) {
-            dispatch(setAuthUserData(id, email, login, true))
-        }
-    })
+        dispatch(setAuthUserData(id, email, login, true))
+    }
 }
-export const loginIn = (email: string | null, password: string | null, rememberMe: boolean) => (dispatch: any) => {
-    API.authAPI.Login(email, password, rememberMe).then(response => {
-        const {messages} = response
-        if (response.resultCode === 0) {
-            dispatch(getAuthMeTC())
-            dispatch(setMessagesLogin(null))
-        } else if (response.resultCode === 1) {
-            dispatch(setMessagesLogin(messages[0]))
-        }
-    })
+export const loginIn = (email: string | null, password: string | null, rememberMe: boolean) => async (dispatch: Dispatch<any>) => {
+    let response = await API.authAPI.Login(email, password, rememberMe)
+    const {messages} = response.data
+    if (response.data.resultCode === 0) {
+        dispatch(getAuthMeTC())
+        dispatch(setMessagesLogin(null))
+    } else if (response.data.resultCode === 1) {
+        dispatch(setMessagesLogin(messages[0]))
+    }
 }
-export const logOut = () => (dispatch: Dispatch<TotalActionType>) => {
-    API.authAPI.Logout().then(response => {
+export const logOut = () => async (dispatch: Dispatch<TotalActionType>) => {
+    let response = await API.authAPI.Logout()
+    if (response.data.resultCode === 0) {
         dispatch(setAuthUserData(null, null, null, false))
         dispatch(setMessagesLogin(null))
-    })
+    }
 }

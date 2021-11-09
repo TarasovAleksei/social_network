@@ -1,4 +1,4 @@
-import {Dispatch} from "react";
+import { Dispatch } from "redux";
 import {getAuthMeTC} from "./authReducer";
 
 let initialState = {
@@ -23,7 +23,8 @@ export const setInitialized = () => {
         type: 'SET_INITIALIZED',
     } as const
 }
-export const initializeApp = () => (dispatch: Dispatch<any>) => {
+//Thunks
+export const initializeApp = () => (dispatch:Dispatch<any>) => {
     const promise = dispatch(getAuthMeTC())
     Promise.all([promise]).then(() => {
         dispatch(setInitialized())

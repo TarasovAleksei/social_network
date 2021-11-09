@@ -3,6 +3,9 @@ import userDefaultPhoto from "../../assets/images/no_foto.jpeg";
 import classes from './Users.module.css'
 import {UserType} from "../redux/usersReducer";
 import {NavLink} from "react-router-dom";
+import Pagination from "rc-pagination";
+import {localInfo} from "../common/locale/en_US";
+import '../../components/common/PaginationStyles/Pagination.css'
 
 type PropsType = {
     users: UserType[],
@@ -15,19 +18,22 @@ type PropsType = {
     onPageChanged: (pageNumber: number) => void,
 }
 export const Users = React.memo((props: PropsType) => {
-    const pagesCount = Math.ceil(props.totalCount / props.pageSize)
-    let pages = []
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i)
-    }
+
     return (
         <div>
-            <div>
-                {pages.map(p => <span key={p} onClick={() => {
-                    props.onPageChanged(p)
-                }} className={props.currentPage === p ? classes.selectedPage : classes.unSelectedPage}>{p}</span>)}
+            {/*<Paginator pageSize={props.pageSize} currentPage={props.currentPage} onPageChanged={props.onPageChanged}*/}
+            {/*           totalItemCount={props.totalCount} portionSize={10} />*/}
 
-            </div>
+            <Pagination style={{marginTop: '24px', alignSelf: 'flex-start'}}
+                        className="ant-pagination"
+                        showQuickJumper
+                        defaultCurrent={props.currentPage}
+                        pageSize={props.pageSize}
+                        total={props.totalCount!}
+                        locale={localInfo}
+                        current={props.currentPage}
+                        onChange={props.onPageChanged}/>
+
             {props.users.map(u => {
                 let path = `/profile/${u.id}`
                 return (
