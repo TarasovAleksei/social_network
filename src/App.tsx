@@ -38,7 +38,7 @@ export const App = (props: PropsType) => {
         dispatch(initializeApp())
     }, [dispatch])
 
-    if (!initialized) return <Preloader/>
+    // if (!initialized) return <Preloader/>
     return (
         <div className='app-wrapper'>
             <HeaderContainer
