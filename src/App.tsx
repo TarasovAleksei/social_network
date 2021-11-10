@@ -3,7 +3,7 @@ import './App.css';
 import NavBar from "./components/Navbar/NavBar";
 import Friends from "./components/Friends/Friends";
 import Music from "./components/Music/Music";
-import {BrowserRouter, Route} from "react-router-dom"
+import {BrowserRouter, HashRouter, Route} from "react-router-dom"
 import News from "./components/News/News";
 import Settings from "./components/Settings/Settings";
 // import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
@@ -46,8 +46,6 @@ export const App = (props: PropsType) => {
             />
             <NavBar friendsPage={friendsPage}/>
             <div className='app-wrapper-content'>
-                <Route path='/profile' render={() => <ProfileContainer/>}/>
-
                 <Route path='/profile/:userID?' render={() => <ProfileContainer/>}/>
                 <Route path='/dialogs/' render={() => {
                     return <Suspense fallback={<div>...loading</div>}>
@@ -67,11 +65,11 @@ export const App = (props: PropsType) => {
 }
 export const MainApp = () => {
     return (
-        <BrowserRouter>
+        <HashRouter basename={process.env.PUBLIC_URL}>
             <Provider store={store}>
                 <App store={store.getState()}/>
             </Provider>
-        </BrowserRouter>
+        </HashRouter>
     )
 }
 
