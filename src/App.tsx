@@ -65,7 +65,7 @@ export const App = (props: PropsType) => {
 }
 export const MainApp = () => {
     return (
-        <HashRouter basename={process.env.PUBLIC_URL}>
+        <HashRouter>
             <Provider store={store}>
                 <App store={store.getState()}/>
             </Provider>
