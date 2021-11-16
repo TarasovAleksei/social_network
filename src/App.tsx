@@ -3,7 +3,7 @@ import './App.css';
 import NavBar from "./components/Navbar/NavBar";
 import Friends from "./components/Friends/Friends";
 import Music from "./components/Music/Music";
-import {BrowserRouter, HashRouter, Route} from "react-router-dom"
+import {BrowserRouter, HashRouter, Redirect, Route, Switch} from "react-router-dom"
 import News from "./components/News/News";
 import Settings from "./components/Settings/Settings";
 // import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
@@ -15,14 +15,12 @@ import {Login} from "./components/Login/Login";
 import {Provider, useDispatch, useSelector} from "react-redux";
 import {logOut} from "./components/redux/authReducer";
 import {initializeApp, InitialStateType} from "./components/redux/appReducer";
-import {Preloader} from "./components/common/preloader/Preloader";
+import {Preloader} from './components/common/preloader/Preloader';
+
 
 const DialogsContainer = lazy(() =>
     import('./components/Dialogs/DialogsContainer')
         .then((module) => ({default: module.DialogsContainer})))
-// const ProfileContainer = lazy(() =>
-//     import('./components/Profile/ProfileContainer')
-//         .then((module) => ({default: module.ProfileContainer})))
 type PropsType = {
     store: AppStateType
 }
@@ -38,7 +36,7 @@ export const App = (props: PropsType) => {
         dispatch(initializeApp())
     }, [dispatch])
 
-    // if (!initialized) return <Preloader/>
+    if (!initialized) return <Preloader/>
     return (
         <div className='app-wrapper'>
             <HeaderContainer
@@ -46,18 +44,23 @@ export const App = (props: PropsType) => {
             />
             <NavBar friendsPage={friendsPage}/>
             <div className='app-wrapper-content'>
-                <Route path='/profile/:userID?' render={() => <ProfileContainer/>}/>
-                <Route path='/dialogs/' render={() => {
-                    return <Suspense fallback={<div>...loading</div>}>
-                        <DialogsContainer/>
-                    </Suspense>
-                }}/>
-                <Route path='/users' render={() => <UsersContainer/>}/>
-                <Route path='/news' render={() => <News/>}/>
-                <Route path='/music' render={() => <Music/>}/>
-                <Route path='/settings' render={() => <Settings/>}/>
-                <Route path='/friends' render={() => <Friends/>}/>
-                <Route path='/login' render={() => <Login/>}/>
+                <Switch>
+                    <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
+                    <Route path='/profile/:userID?' render={() => <ProfileContainer/>}/>
+                    <Route path='/dialogs/' render={() => {
+                        return <Suspense fallback={<div>...loading</div>}>
+                            <DialogsContainer/>
+                        </Suspense>
+                    }}/>
+                    <Route path='/users' render={() => <UsersContainer/>}/>
+                    <Route path='/news' render={() => <News/>}/>
+                    <Route path='/music' render={() => <Music/>}/>
+                    <Route path='/settings' render={() => <Settings/>}/>
+                    <Route path='/friends' render={() => <Friends/>}/>
+                    <Route path='/login' render={() => <Login/>}/>
+                    <Route path={'*'} render={() => <div>404 NOT FOUND</div>}/>
+                </Switch>
+
             </div>
 
         </div>

@@ -2,9 +2,19 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Profile from "./Profile";
 import {AppStateType} from "../redux/redux-store";
-import {getProfile, getStatus, ProfileType, setIsMe, StatusType, updateStatus} from "../redux/profileReducer";
+import {
+    changeEditMode,
+    getProfile,
+    getStatus, initialStateType,
+    ProfileType,
+    setIsMe,
+    StatusType,
+    updateStatus,
+    uploadPhoto, uploadProfile
+} from "../redux/profileReducer";
 import {Redirect, useParams} from "react-router-dom";
 import {InitialStateType} from "../redux/authReducer";
+import {InputsForFormProfile} from "./ProfileInfo/ProfileInfo";
 
 
 export type ParamsType = {
@@ -16,15 +26,19 @@ export const ProfileContainer = () => {
     const dispatch = useDispatch()
     const {isAuth} = useSelector<AppStateType, InitialStateType>(state => state.auth)
     const myId = useSelector<AppStateType, string | null>(state => state.auth.id)
-    const profile = useSelector<AppStateType, ProfileType>((state) => state.profilePage.profile)
-    const status = useSelector<AppStateType, StatusType>((state) => state.profilePage.status)
-    const isMe = useSelector<AppStateType, boolean>((state) => state.profilePage.isMe)
-
-
+    const {profile, status, isMe, editMode} = useSelector<AppStateType, initialStateType>((state) => state.profilePage)
+    const changeEditModeCB = (editMode: boolean) => {
+        dispatch(changeEditMode(editMode))
+    }
+    const updateProfileCB = (profile: InputsForFormProfile) => {
+        dispatch(uploadProfile(profile))
+    }
     const updateStatusCB = (status: StatusType) => {
         dispatch(updateStatus(status))
     }
-
+    const savePhoto = (photo: string) => {
+        dispatch(uploadPhoto(photo))
+    }
     useEffect(() => {
         if (!userID && myId) {
             userID = myId
@@ -36,15 +50,19 @@ export const ProfileContainer = () => {
         }
         dispatch(getProfile(userID))
         dispatch(getStatus(userID))
-    }, [dispatch, userID])
+    }, [dispatch, userID, profile])
 
     if (!isAuth) return <Redirect to={'/login'}/>
     return (
         <Profile
+            savePhoto={savePhoto}
             profile={profile}
             status={status}
             isMe={isMe}
             updateStatusCB={updateStatusCB}
+            updateProfileCB={updateProfileCB}
+            changeEditModeCB={changeEditModeCB}
+            editMode={editMode}
         />
     )
 }

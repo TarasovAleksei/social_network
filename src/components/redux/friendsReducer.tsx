@@ -1,12 +1,5 @@
 import { v1 } from "uuid";
-export type friendsType = {
-    id: string,
-    name: string,
-    url: string
-}
-export type friendsPageType = {
-    friends: friendsType[]
-}
+
 let initialState:friendsPageType = {
     friends: [
         {
@@ -25,4 +18,13 @@ let initialState:friendsPageType = {
 
 export const FriendsReducer = (state:friendsPageType=initialState, action:any):friendsPageType=>{
     return state
+}
+//types
+export type friendsType = {
+    id: string,
+    name: string,
+    url: string
+}
+export type friendsPageType = {
+    friends: friendsType[]
 }

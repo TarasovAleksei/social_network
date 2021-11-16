@@ -2,7 +2,7 @@ import React from "react";
 import classes from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {dialogType, messageType, newMessageType} from "../redux/dialogsReducer";
+import {dialogType, messageType} from "../redux/dialogsReducer";
 import {SubmitHandler, useForm} from "react-hook-form";
 
 export type inputForDialogs = {

@@ -2,12 +2,14 @@
     margin: 20px;
     display: flex;
     justify-content: space-between;
-    height: 100vh;
-}
 
+}
+.containerForInputs {
+    display: flex;
+    flex-direction: column;
+}
 .avatar img {
     border-radius: 5px;
-    height: 300px;
     width: 300px;
 }
 
@@ -15,14 +17,18 @@
     flex-wrap: wrap;
     border: 1px solid white;
     border-radius: 5px;
-    flex-direction: column;
-    display: flex;;
-    width: 500px;
-    height: 500px;
+    display: flex;
+    min-width: 300px;
+    max-width: 700px;
+    max-height: 700px;
     color: white;
     font-weight: 700;
+    flex-direction: row;
+    justify-content: space-between;
 }
-
+.choosingPhoto {
+    margin: 10px;
+}
 .contacts {
     display: flex;
     flex-direction: column;
